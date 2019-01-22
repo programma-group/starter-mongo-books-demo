@@ -18,7 +18,7 @@
     "test": "nyc mocha --timeout 100000 --exit",
     "createuser": "node ./src/data/loadInitialData.js --create-user",
     "deleteall": "node ./src/data/loadInitialData.js --delete-all",
-    "rebuild": "node ./src/data/loadInitialData.js --delete-all && node ./src/data/loadInitialData.js --create-user"
+    "loaddb": "node ./src/data/loadDB.js"
   },
   "repository": {
     "type": "git",
