@@ -1,0 +1,70 @@
+{
+  "name": "starter-mongo",
+  "version": "1.0.0",
+  "description": "A starter for NodeJS apps using MongoDB",
+  "main": "start.js",
+  "engines": {
+    "node": ">= 11.1.0"
+  },
+  "directories": {
+    "doc": "./src/docs"
+  },
+  "scripts": {
+    "prod": "node ./start.js",
+    "watch": "nodemon ./src/start.js --ignore public/",
+    "start": "concurrently \"npm run watch\" \"npm run eslintw\"",
+    "eslintw": "esw -w . --ext .js",
+    "eslint": "eslint . --ext .js",
+    "test": "nyc mocha --timeout 100000 --exit",
+    "createuser": "node ./src/data/loadInitialData.js --create-user",
+    "deleteall": "node ./src/data/loadInitialData.js --delete-all",
+    "rebuild": "node ./src/data/loadInitialData.js --delete-all && node ./src/data/loadInitialData.js --create-user"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/programma-group/starter-mongo.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/programma-group/starter-mongo/issues"
+  },
+  "homepage": "https://github.com/programma-group/starter-mongo#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
+    "dotenv": "^6.1.0",
+    "express": "^4.16.4",
+    "express-validator": "^5.3.0",
+    "express-winston": "^3.0.1",
+    "helmet": "^3.15.0",
+    "html-to-text": "^4.0.0",
+    "jsonwebtoken": "^8.4.0",
+    "juice": "^5.0.1",
+    "mongoose": "^5.3.11",
+    "mongoose-mongodb-errors": "0.0.2",
+    "nodemailer": "^4.7.0",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
+    "passport-local-mongoose": "^5.0.1",
+    "pug": "^2.0.3",
+    "swagger-jsdoc": "^3.2.3",
+    "swagger-ui-express": "^4.0.1",
+    "validator": "^10.9.0",
+    "winston": "^3.1.0"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.2.0",
+    "concurrently": "^4.0.1",
+    "eslint": "^5.9.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-watch": "^4.0.2",
+    "mocha": "^5.2.0",
+    "mockery": "^2.1.0",
+    "nodemailer-mock": "^1.3.14",
+    "nodemon": "^1.18.7",
+    "nyc": "^13.1.0"
+  }
+}
