@@ -63,3 +63,5 @@ typings/
 variables.env
 .tern-port
 *.gz
+books.json
+reviews.json
