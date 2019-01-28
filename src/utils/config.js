@@ -4,7 +4,5 @@ exports.winstonConfig = {
   transports: [
     new winston.transports.Console(),
   ],
-  format: winston.format.combine(
-    winston.format.json(),
-  ),
+  format: winston.format.combine(winston.format.json()),
 };
