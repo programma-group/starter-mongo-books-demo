@@ -16,11 +16,14 @@ mongoose.connect(process.env.DATABASE, {
 mongoose.Promise = global.Promise; // Tell Mongoose to use ES6 promises
 
 const Book = require('../models/Book');
+const Review = require('../models/Review');
 
-async function loadBooks() {
+const loadData = (model, filename) => new Promise(async (resolve, reject) => {
+  const hrstart = process.hrtime();
+  console.log(`Loading "${filename}"`);
   try {
-    await Book.deleteMany({});
-    const stream = fs.createReadStream('./src/data/books.json');
+    await model.deleteMany({});
+    const stream = fs.createReadStream(`./src/data/${filename}.json`);
     const outstream = new Stream();
     outstream.readable = true;
     outstream.writable = true;
@@ -32,25 +35,41 @@ async function loadBooks() {
     });
 
     let buffer = [];
+    let processed = 0;
     rl.on('line', async (line) => {
-      const book = JSON.parse(JSON.stringify(eval(`(${line})`)));
-      if (book.title && book.asin) {
-        buffer.push(book);
+      processed += 1;
+      const result = JSON.parse(JSON.stringify(eval(`(${line})`)));
+      if (result.asin && (result.title || result.reviewerID)) {
+        buffer.push(result);
         if (buffer.length === 1000) {
-          await Book.insertMany(buffer);
+          await model.insertMany(buffer);
+          process.stdout.clearLine();
+          process.stdout.cursorTo(0);
+          process.stdout.write(
+            `Current progress: [Processed: ${processed}]`,
+          );
           buffer = [];
         }
       }
     });
 
     rl.on('close', async () => {
-      await Book.insertMany(buffer);
-      console.log('All books done');
-      return process.exit();
+      await model.insertMany(buffer);
+      const hrend = process.hrtime(hrstart);
+      console.log(`\nAll results done. Script "${filename}" took ${hrend[0] / 60} minutes to load`);
+      console.log(`${processed} items were processed`);
+      console.log('----------------------------------------------------------------------------');
+      resolve(true);
     });
   } catch (err) {
-    console.log(err);
+    reject(console.log(err));
   }
-}
+});
 
-loadBooks();
+const run = async () => {
+  await loadData(Book, 'books');
+  await loadData(Review, 'reviews');
+  return process.exit();
+};
+
+run();
