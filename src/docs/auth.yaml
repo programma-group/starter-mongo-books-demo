@@ -2,28 +2,71 @@ paths:
   /:
     get:
       tags:
-        - User authentication
-      summary: creates a new user
+        - Books
+      summary: gets a books list
       produces:
       - application/json
       parameters:
-      - in: body
-        name: sign up
-        description: It enables a user to create an account
+      - name: page
+        in: query
+        description: Page of the search
         required: false
-        schema:
-          type: "object"
-          properties:
-            email:
-              type: string
-            name:
-              type: string
-            password:
-              type: string
-            password-confirm:
-              type: string
+        type: integer
+        items:
+          type: string
+      - name: limit
+        in: query
+        description: Search results limit
+        required: false
+        type: integer
+        items:
+          type: string
       responses:
-        201:
-          description: An object with user details and the login token
+        200:
+          description: An object with books and the books count
         400:
           description: An object with input errors
+
+definitions:
+  Book:
+    type: object
+    properties:
+      asin:
+        type: string
+        required: true
+      title:
+        type: string
+        required: true
+      price:
+        type: integer
+        format: int64
+      imUrl:
+        type: string
+      related:
+        type: object
+        properties:
+          also_bought:
+            type: array
+            items:
+              type: string
+          also_viewed:
+            type: array
+            items:
+              type: string
+          bought_together:
+            type: array
+            items:
+              type: string
+      salesRank:
+        type: object
+        properties:
+          name:
+            type: string
+      brand:
+        type: string
+      categories:
+        type: array
+        items:
+          type: array
+          items:
+            type: string
