@@ -40,7 +40,18 @@ describe('The books:', () => {
   });
 
   it('should get the books information', (done) => {
-    chai.request(app).get('/').end((err, res) => {
+    chai.request(app).get('/?limit=10').end((err, res) => {
+      res.should.have.status(200);
+      res.body.should.be.a('object');
+      res.body.count.should.eql(3);
+      res.body.books[0].should.have.property('asin').eql('abc123456');
+      res.body.books[0].reviews[0].should.have.property('reviewerName').eql('Roger Gonzalez');
+      done();
+    });
+  });
+
+  it('should get the books information using limit and pages', (done) => {
+    chai.request(app).get('/?limit=1000&page=1').end((err, res) => {
       res.should.have.status(200);
       res.body.should.be.a('object');
       res.body.count.should.eql(3);
