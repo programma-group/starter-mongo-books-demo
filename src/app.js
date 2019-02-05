@@ -8,6 +8,8 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('./utils/swagger');
 const errorHandlers = require('./utils/errorHandlers');
 const { winstonConfig } = require('./utils/config');
+const bookRoutes = require('./routes/book');
+
 
 const app = express();
 
@@ -33,6 +35,7 @@ const options = {
 };
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, options));
+app.use('/', bookRoutes);
 
 /* istanbul ignore if */
 if (process.env.NODE_ENV !== 'test') {

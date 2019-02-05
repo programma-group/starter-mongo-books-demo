@@ -46,4 +46,8 @@ reviewSchema.virtual('book', {
   foreignField: 'asin',
 });
 
+reviewSchema.index({
+  asin: 'text',
+});
+
 module.exports = mongoose.model('Review', reviewSchema);
